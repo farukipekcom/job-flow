@@ -1,9 +1,13 @@
 import Metrics from "@/components/Metrics/Metrics";
-import Sidebar from "@/components/Sidebar/Sidebar";
 import Card from "@/components/ui/common/card/card";
 import { CalendarDays, Mail, Sparkles, TrendingUp } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
+export default async function Home() {
+  const cookieStore = await cookies();
+  const supabase = createClient(cookieStore);
+  const { data, error } = await supabase.from("jobs").select();
 
-export default function Home() {
   return (
     <div className="m-6 flex gap-6">
       <div className="ml-72 flex w-full flex-col gap-y-4">
@@ -33,9 +37,13 @@ export default function Home() {
             icon={<CalendarDays size={16} />}
           />
         </div>
-        <Card title="Job pipeline" subTitle="View all jobs" />
+        <Card
+          data={data ?? []}
+          error={error?.message}
+          title="Job pipeline"
+          subTitle="View all jobs"
+        />
       </div>
-      <Sidebar />
     </div>
   );
 }

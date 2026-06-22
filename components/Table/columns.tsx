@@ -1,9 +1,9 @@
 "use client";
 
-import {ColumnDef} from "@tanstack/react-table";
-import {MoreHorizontal, ArrowUpDown} from "lucide-react";
-import {Button} from "@/components/ui/button";
-import {Checkbox} from "@/components/ui/checkbox";
+import { ColumnDef } from "@tanstack/react-table";
+import { MoreHorizontal, ArrowUpDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,15 +27,24 @@ export type Payment = {
 export const columns: ColumnDef<Payment>[] = [
   {
     id: "select",
-    header: ({table}) => (
+    header: ({ table }) => (
       <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+        className="borderColor"
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
       />
     ),
-    cell: ({row}) => (
-      <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} aria-label="Select row" />
+    cell: ({ row }) => (
+      <Checkbox
+        className="borderColor"
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
     ),
     enableSorting: false,
     enableHiding: false,
@@ -45,26 +54,29 @@ export const columns: ColumnDef<Payment>[] = [
     header: "Company",
   },
   {
-    accessorKey: "jobTitle",
-    header: "Job Title",
+    accessorKey: "role",
+    header: "Job Role",
   },
   {
     accessorKey: "location",
     header: "Location",
   },
   {
-    accessorKey: "salaryRange",
+    accessorKey: "salary_range",
     header: "Salary Range",
   },
   {
-    accessorKey: "interviewDate",
+    accessorKey: "interview_date",
     header: "Interview Date",
   },
   {
     accessorKey: "stage",
-    header: ({column}) => {
+    header: ({ column }) => {
       return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
           Stage
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -73,7 +85,7 @@ export const columns: ColumnDef<Payment>[] = [
   },
   {
     id: "actions",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const payment = row.original;
       return (
         <DropdownMenu>
@@ -85,7 +97,11 @@ export const columns: ColumnDef<Payment>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id)}>Copy payment ID</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(payment.id)}
+            >
+              Copy payment ID
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>
             <DropdownMenuItem>View payment details</DropdownMenuItem>
