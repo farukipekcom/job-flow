@@ -10,6 +10,8 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import NavbarAuth from "./NavbarAuth";
+import NavItem from "./NavItem";
+import { User } from "@supabase/supabase-js";
 const navItems = [
   {
     label: "Dashboard",
@@ -37,18 +39,17 @@ const navItems = [
     icon: <FileText size={16} />,
   },
 ];
-export default function Navbar() {
+export default function Navbar({ user }: { user: User | null }) {
   const pathname = usePathname();
   return (
-    <header className="borderColor fixed flex h-screen w-72 border-r border-gray-200 p-6">
+    <header className="borderColor fixed flex h-screen w-72 border-r p-6">
       <div className="wrapper flex min-h-0 flex-1 flex-col">
         <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-black">
-            <div className="h-5 w-5 rounded-xs bg-gray-100"></div>
+          <div className="bg-primary flex h-10 w-10 items-center justify-center rounded-xl">
+            <div className="h-5 w-5 rounded-sm bg-white"></div>
           </div>
           <div className="flex flex-col gap-y-1">
-            <h1 className="text-sm font-bold text-black">Job Flow</h1>
-            <span className="text-xs text-gray-500">AI Job Tracker</span>
+            <h1 className="text-secondary text-xl font-extrabold">Job Flow</h1>
           </div>
         </Link>
         <nav className="mt-8 flex-1">
@@ -56,24 +57,19 @@ export default function Navbar() {
             {navItems.map(({ label, href, icon }) => {
               const isActive = pathname === href;
               return (
-                <Link
-                  href={href}
-                  key={href}
-                  className={cn(
-                    "flex h-10 items-center gap-2 rounded-lg p-3 text-sm font-medium hover:bg-[#efe7dc]",
-                    isActive
-                      ? "bg-black text-white hover:bg-black"
-                      : "textColor",
-                  )}
-                >
-                  <div>{icon}</div>
-                  <span>{label}</span>
+                <Link href={href} key={href}>
+                  <NavItem
+                    key={href}
+                    icon={icon}
+                    label={label}
+                    isActive={isActive}
+                  />
                 </Link>
               );
             })}
           </ul>
         </nav>
-        <NavbarAuth />
+        <NavbarAuth user={user} />
       </div>
     </header>
   );

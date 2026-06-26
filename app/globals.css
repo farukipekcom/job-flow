@@ -90,9 +90,7 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
@@ -116,8 +114,15 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
-
+@theme inline {
+  --color-primary: #4318ff;
+  --color-secondary: #2b3674;
+}
 @layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
   * {
     @apply border-border outline-ring/50;
   }
@@ -130,14 +135,23 @@
 }
 
 @layer utilities {
+  .backgroundColor {
+    background-color: #f4f7fe;
+  }
+  .primaryColor {
+    background-color: #1a3580;
+  }
+  .borderColor {
+    border-color: #ececec;
+  }
+  .customShadow {
+    box-shadow: 14px 17px 40px 4px #7090b008;
+  }
   .wrapper {
     @apply mx-auto w-full max-w-7xl;
   }
   .container {
     @apply min-h-screen;
-  }
-  .borderColor {
-    border-color: #d3ddcd;
   }
   .inputBorderColor {
     border-color: #d8d0c3;

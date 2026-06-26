@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} relative flex h-max w-full flex-col bg-[#F6F4EE] font-sans antialiased`}
+        className={`${inter.className} relative flex h-max w-full flex-col font-sans antialiased`}
       >
         {children}
       </body>

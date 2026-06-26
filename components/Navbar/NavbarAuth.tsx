@@ -2,51 +2,35 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { LogIn, LogOut, UserPlus } from "lucide-react";
+import { LogIn, LogOut, Settings, UserPlus } from "lucide-react";
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
+import NavItem from "./NavItem";
 
-export default function NavbarAuth() {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const supabase = createClient();
-
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUser(user);
-      setLoading(false);
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="borderColor mt-auto border-t pt-4">
-        <div className="bg-muted h-8 w-full animate-pulse rounded-lg" />
-      </div>
-    );
-  }
-
+export default function NavbarAuth({ user }: { user: User | null }) {
   if (user) {
     return (
       <div className="borderColor mt-auto border-t pt-4">
-        <p className="textColor mb-3 truncate text-xs">{user.email}</p>
-        <form action="/auth/signout" method="post">
-          <Button type="submit" variant="outline" className="w-full">
-            <LogOut size={16} />
-            Sign out
-          </Button>
+        <NavItem icon={<Settings size={16} />} label="Settings" />
+        <form
+          action="/auth/signout"
+          method="post"
+          className="flex w-full cursor-pointer items-center gap-x-2 bg-transparent font-semibold"
+        >
+          <NavItem
+            icon={<LogOut size={16} />}
+            label={
+              <Button
+                variant={"ghost"}
+                className="w-full cursor-pointer px-0 hover:bg-transparent"
+              >
+                Sign Out
+              </Button>
+            }
+          />
         </form>
+        <br />
       </div>
     );
   }
